@@ -1,0 +1,83 @@
+
+  <!-- <img src="/app/assets/images/Logo_210.png" alt="TheGameQuery"> -->
+<div class="logo_img">
+  <%=image_tag('Retro_logo.png')%>
+</div>
+
+
+<div class="search_container">
+  <div class="h1_color">
+      <h1>Look Up Any Video Game Or Series!</h1>
+        <%= form_tag index_path do %>
+        <div class="form-group">
+        <div class='input-group date'>
+          <%= text_field_tag :search, nil, placeholder: "Search A Game Or Series!", :required => true, class: "form-control" %>
+        <span class="input-group-addon">
+        <!-- <span class="glyphicon glyphicon-calendar"></span> -->
+      </div>
+        <br/>
+        <%= submit_tag "SEARCH IT!", class: "btn my-btn btn-lg" %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+
+<div class="container-fluid">
+    <div class="col-sm-4">
+      <h2 class="h2_style">Series</h2>
+      <div class="well">
+        <p>
+          <% if !@response_series.blank? %>
+            <strong><%= @response_series[0]["name"] %></strong>
+          <% end %>
+        </p>
+      </div>
+    </div>
+
+
+    <div class="col-sm-4">
+      <h2 class="h2_style">Games</h2>
+      <div class="well">
+        <p>
+          <% if !@response_game.blank? %>
+            <% @response_game.each do |num|%>
+              <p><strong><em><%= num["name"].upcase %></em></strong></p>
+              <%#= num["cover"] %>
+              <p><strong>Release Date:</strong> <%= num["release_dates"][0]["human"] %></p>
+              <% if !num["cover"].nil? %>
+                <p><strong>Cover Art:</strong> <img class="cover_art" src='<%= num["cover"]["url"]%>' style="width:73px;height:85px;" onerror="this.style.display='none'"/></p>
+              <% else %>
+                <%= "No Cover Art Available" %><br>
+              <% end %>
+              <p><strong>Summary: </strong><br><%= num["summary"] %></p>
+              <p><strong>IGDB Rating: </strong>
+              <% if !num["rating"].blank? %>
+                <%= num["rating"].round(1) %><br>
+              <% else %>
+                <%= "Rating Pending" %><br>
+              <% end %>
+              <strong>Aggregated Rating: </strong>
+              <% if !num["aggregated_rating"].blank? %>
+                <%= num["aggregated_rating"].round(1) %><br>
+              <% else %>
+                <%= "Rating Pending" %>
+              <% end %></p>
+              <hr style="border: 0.5px solid #4c180a"/>
+            <% end %>
+          <% end %>
+        </p>
+      </div>
+    </div>
+
+
+    <div class="col-sm-4">
+      <h2 class="h2_style">Characters</h2>
+      <div class="well">
+        <p>
+          <% if !@response_game.blank? %>
+            <strong><%= @response_character[0]["name"] %></strong>
+          <% end %>
+        </p>
+      </div>
+    </div>
+  </div>
