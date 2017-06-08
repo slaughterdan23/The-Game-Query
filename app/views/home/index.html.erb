@@ -7,11 +7,11 @@
 
 <div class="search_container">
   <div class="h1_color">
-      <h1>Look Up Any Video Game Or Series!</h1>
+      <h1>Enter A Keyword To See Related Info!</h1>
         <%= form_tag index_path do %>
         <div class="form-group">
         <div class='input-group date'>
-          <%= text_field_tag :search, nil, placeholder: "Search A Game Or Series!", :required => true, class: "form-control" %>
+          <%= text_field_tag :search, nil, placeholder: "Search A Game, Series, Or Character!", :required => true, class: "form-control" %>
         <span class="input-group-addon">
         <!-- <span class="glyphicon glyphicon-calendar"></span> -->
       </div>
@@ -27,9 +27,16 @@
       <h2 class="h2_style">Series</h2>
       <div class="well">
         <p>
-          <% if !@response_series.blank? %>
-            <strong><%= @response_series[0]["name"] %></strong>
-            <%#= @response_series[0]["games"] %>
+          <% if params[:search].nil?%>
+              <p align="center"> Search To See Results! </p>
+          <% else %>
+            <% if !@response_series.blank? %>
+              <!-- <strong><%#= @response_series[0]["name"] %></strong> -->
+              <%#= @response_series[0]["games"] %>
+              <a href='<%= @response_series[0]["url"] %>'><%= @response_series[0]["name"] %></a>
+            <% else %>
+                  <p>There are no series names containing <strong>"<%=params[:search]%>"</strong>!</p>
+            <% end %>
           <% end %>
         </p>
       </div>
@@ -40,33 +47,45 @@
       <h2 class="h2_style">Games</h2>
       <div class="well">
         <p>
-          <% if !@response_game.blank? %>
-            <% @response_game.each do |num|%>
-              <p><strong><em><%= num["name"].upcase %></em></strong></p>
-              <% if !num["release_dates"].nil? %>
-                <p><strong>Release Date:</strong> <%= num["release_dates"][0]["human"] %></p>
-              <% else %>
-                <p><strong>Release Date:</strong></p>
+          <% if params[:search].nil?%>
+              <p align="center"> Search To See Results! </p>
+          <% else %>
+            <% if !@response_game.blank? %>
+              <% @response_game.each do |num|%>
+                <p><strong><em><%= num["name"].upcase %></em></strong></p>
+
+                <% if !num["release_dates"].nil? %>
+                  <p><strong>Release Date:</strong> <%= num["release_dates"][0]["human"] %></p>
+                <% else %>
+                  <p><strong>Release Date:</strong></p>
+                <% end %>
+
+                <% if !num["cover"].nil? %>
+                  <p><strong>Cover Art:</strong> <img class="cover_art" src='<%= num["cover"]["url"]%>' style="width:73px;height:85px;" onerror="this.style.display='none'"/></p>
+                <% else %>
+                  <p><strong>Cover Art:</strong></p><img onerror="this.style.display='none'"/>
+                <% end %>
+
+                <p><strong>Summary: </strong><br><%= num["summary"] %></p>
+
+                <p><strong>IGDB Rating: </strong>
+                <% if !num["rating"].blank? %>
+                  <%= num["rating"].round(1) %><br>
+                <% else %>
+                  <%= "Rating Pending" %><br>
+                <% end %>
+
+                <strong>Aggregated Rating: </strong>
+                <% if !num["aggregated_rating"].blank? %>
+                  <%= num["aggregated_rating"].round(1) %><br>
+                <% else %>
+                  <%= "Rating Pending" %>
+                <% end %></p>
+
+                <hr style="border: 0.5px solid #4c180a"/>
               <% end %>
-              <% if !num["cover"].nil? %>
-                <p><strong>Cover Art:</strong> <img class="cover_art" src='<%= num["cover"]["url"]%>' style="width:73px;height:85px;" onerror="this.style.display='none'"/></p>
-              <% else %>
-                <p><strong>Cover Art:</strong></p><img onerror="this.style.display='none'"/>
-              <% end %>
-              <p><strong>Summary: </strong><br><%= num["summary"] %></p>
-              <p><strong>IGDB Rating: </strong>
-              <% if !num["rating"].blank? %>
-                <%= num["rating"].round(1) %><br>
-              <% else %>
-                <%= "Rating Pending" %><br>
-              <% end %>
-              <strong>Aggregated Rating: </strong>
-              <% if !num["aggregated_rating"].blank? %>
-                <%= num["aggregated_rating"].round(1) %><br>
-              <% else %>
-                <%= "Rating Pending" %>
-              <% end %></p>
-              <hr style="border: 0.5px solid #4c180a"/>
+            <% else %>
+                  <p>There are no game names containing <strong>"<%=params[:search]%>"</strong>!</p>
             <% end %>
           <% end %>
         </p>
@@ -78,8 +97,18 @@
       <h2 class="h2_style">Characters</h2>
       <div class="well">
         <p>
-          <% if !@response_character.blank? %>
-            <strong><%= @response_character[0]["name"] %></strong>
+          <% if params[:search].nil?%>
+              <p align="center"> Search To See Results! </p>
+          <% else %>
+            <% if !@response_character.blank? %>
+              <p> Character names which include <strong>"<%=params[:search]%>"</strong></p>
+              <% @response_character.each do |character|%>
+                <a href='<%= character["url"] %>' target="blank"><%= character["name"]%></a>
+                <br>
+              <% end %>
+            <% else %>
+                  <p>There are no characters named <strong>"<%=params[:search]%>"</strong>!</p>
+            <% end %>
           <% end %>
         </p>
       </div>
