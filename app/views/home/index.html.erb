@@ -4,6 +4,9 @@
   <%=image_tag('Retro_logo.png')%>
 </div>
 
+<div>
+  <h3 class="h3_style">Your Friendly Neighborhood Video Game Database</h3>
+</div>
 
 <div class="search_container">
   <div class="h1_color">
@@ -23,6 +26,7 @@
   </div>
 
 <div class="container-fluid">
+
     <div class="col-sm-4">
       <h2 class="h2_style">Series</h2>
       <div class="well">
@@ -33,7 +37,8 @@
             <% if !@response_series.blank? %>
               <!-- <strong><%#= @response_series[0]["name"] %></strong> -->
               <%#= @response_series[0]["games"] %>
-              <a href='<%= @response_series[0]["url"] %>'><%= @response_series[0]["name"] %></a>
+              <a href='<%= @response_series[0]["url"] %>' target="blank"><%= @response_series[0]["name"] %></a>
+
             <% else %>
                   <p>There are no series names containing <strong>"<%=params[:search]%>"</strong>!</p>
             <% end %>
