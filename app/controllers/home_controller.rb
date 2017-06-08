@@ -1,7 +1,7 @@
 class HomeController < ApplicationController
   def index
 
-    @response_game = HTTParty.get "https://igdbcom-internet-game-database-v1.p.mashape.com/games/?fields=*&limit=10&offset=0&order=release_dates.date%3Adesc&search=#{params[:search]}&filter[name][in]=#{params[:search]}",
+    @response_game = HTTParty.get "https://igdbcom-internet-game-database-v1.p.mashape.com/games/?fields=*&limit=10&offset=0&order=popularity:desc:min&search=#{params[:search]}&filter[name][any]=#{params[:search]}",
     headers:{
     "X-Mashape-Key" => "w3limrbh6zmshFMoPq8N3z59Lqp9p1wObHdjsnU5TkTVaDzB40",
     "Accept" => "application/json"
